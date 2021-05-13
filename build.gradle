@@ -1,0 +1,68 @@
+import net.kyori.indra.IndraExtension
+
+plugins {
+    // indra - common utilities for building/publishing (yoink: https://github.com/Minestom/Minestom)
+    id "net.kyori.indra" version "2.0.3" apply false
+    id "net.kyori.indra.publishing" version "2.0.3" apply false
+    id "com.github.johnrengelman.shadow" version '5.2.0' apply false
+
+
+}
+
+group = 'net.thiccaxe.resonance'
+version = '1.2.0-SNAPSHOT'
+description = "A proximity chat plugin."
+
+subprojects {
+    apply plugin: "net.kyori.indra"
+    apply plugin: "net.kyori.indra.publishing"
+    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: "java"
+    it.version = project.version
+    repositories {
+        mavenCentral()
+        maven { url "https://papermc.io/repo/repository/maven-public/" }
+    }
+
+    dependencies {
+        implementation 'org.jetbrains:annotations:20.1.0'
+        implementation "com.google.guava:guava:30.1.1-jre"
+        compileOnly 'io.netty:netty-all:4.1.63.Final'
+        if (project.name != "common")
+        implementation project(":common")
+    }
+
+    extensions.configure(IndraExtension.class) {
+        it.javaVersions {
+            it.target 11
+        }
+
+        it.github("thiccaxe", "Resonance") {
+            it.ci(false)
+        }
+
+        it.mitLicense()
+
+        it.configurePublications {
+            it.pom {
+                it.developers {
+                    it.developer {
+                        it.id.set("thiccaxe")
+                    }
+                    it.developer {
+                        it.id.set("Razboy20")
+                    }
+                }
+            }
+        }
+    }
+
+
+
+}
+
+
+
+repositories {
+    mavenCentral()
+}

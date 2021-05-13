@@ -1,0 +1,5 @@
+main: net.thiccaxe.resonance.implementation.paper.ResonancePaper
+name: Resonance
+version: ${project.version}
+api-version: 1.16
+authors: [thiccaxe, Razboy20]

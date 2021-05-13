@@ -1,0 +1,4 @@
+rootProject.name = 'Resonance'
+
+include 'common'
+include 'paper'
