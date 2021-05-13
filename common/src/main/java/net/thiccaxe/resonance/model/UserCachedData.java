@@ -3,12 +3,12 @@ package net.thiccaxe.resonance.model;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class UserCachedData {
-    private final User user;
+    protected final User user;
+    protected @Nullable UserLocation location;
 
 
     private long lastUpdateTime = 0;
 
-    private @Nullable UserLocation location;
 
 
 

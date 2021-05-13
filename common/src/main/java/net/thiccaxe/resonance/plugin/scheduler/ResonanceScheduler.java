@@ -1,9 +1,21 @@
 package net.thiccaxe.resonance.plugin.scheduler;
 
+import net.thiccaxe.resonance.ResonanceSystem;
+import net.thiccaxe.resonance.feature.ResonanceFeature;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
+
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
-public interface ResonanceScheduler {
+public interface ResonanceScheduler extends ResonanceFeature {
+    @NotNull String featureName = "ResonanceScheduler";
+    @NotNull @Unmodifiable List<String> featureDescription = List.of(
+            "Handles tasks that need to be run async or sync,",
+            "On repeat or once."
+    );
+
     /**
      * Gets an async executor instance
      *
@@ -69,4 +81,14 @@ public interface ResonanceScheduler {
      * <p>{@link #async()} and {@link #executeAsync(Runnable)}.</p>
      */
     void shutdownExecutor();
+
+    @Override
+    default @NotNull String name() {
+        return featureName;
+    }
+
+    @Override
+    default @NotNull @Unmodifiable List<String> description() {
+        return featureDescription;
+    }
 }

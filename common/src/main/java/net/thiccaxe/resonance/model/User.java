@@ -41,6 +41,9 @@ public abstract class User {
         return uuid.toString();
     }
 
+    public abstract @NotNull UserCachedData getData();
+    public abstract void setData(@NotNull UserCachedData data);
+
 
 
     @Override

@@ -6,28 +6,41 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.*;
+import net.thiccaxe.resonance.feature.FeatureEnableException;
+import net.thiccaxe.resonance.feature.ResonanceFeature;
 import net.thiccaxe.resonance.plugin.ResonancePlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
-public class ResonanceServer {
-    private @NotNull ResonancePlugin plugin;
+import java.util.List;
 
-    private EventLoopGroup workerGroup;
-    private EventLoopGroup bossGroup;
+public class ResonanceServer implements ResonanceFeature {
+    private final @NotNull String featureName = "ResonanceServer";
+    private final @NotNull @Unmodifiable List<String> featureDescription = List.of(
+            "Webserver for Resonance,",
+            "that handles HTTP / WS requests" // todo https/wss :(
+    );
 
-    private volatile boolean running = false;
+    private @NotNull
+    final ResonancePlugin plugin;
 
-    public ResonanceServer(@NotNull ResonancePlugin plugin) {
+    private final EventLoopGroup workerGroup;
+    private final EventLoopGroup bossGroup;
+
+    private final int port;
+    private volatile boolean enabled = false;
+
+    public ResonanceServer(@NotNull ResonancePlugin plugin, final int port) {
         this.plugin = plugin;
         workerGroup = new NioEventLoopGroup(1);
         bossGroup = new NioEventLoopGroup(1);
+        this.port = port;
     }
 
 
-
-    public void start(final int port) {
-        running = true;
-        plugin.logger().info("Starting Resonance Server on Port: " + port);
+    @Override
+    public void enable() throws FeatureEnableException {
+        plugin.logger().info("Starting " + name() + " on Port: " + port);
         plugin.scheduler().async().execute(() -> {
             try {
                 ServerBootstrap bootstrap = new ServerBootstrap();
@@ -55,21 +68,34 @@ public class ResonanceServer {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                stop();
+                disable();
             }
         });
-
-
+        enabled = true;
     }
 
-    public void stop() {
+
+    @Override
+    public void disable() {
         plugin.logger().info("Stopping Resonance Server ...");
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
+        enabled = false;
     }
 
-    public boolean isRunning() {
-        return running;
+
+    @Override
+    public boolean enabled() {
+        return enabled;
     }
 
+    @Override
+    public @NotNull String name() {
+        return featureName;
+    }
+
+    @Override
+    public @NotNull @Unmodifiable List<String> description() {
+        return featureDescription;
+    }
 }

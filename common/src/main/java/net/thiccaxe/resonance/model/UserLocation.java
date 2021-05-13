@@ -45,7 +45,7 @@ public class UserLocation {
         return world;
     }
 
-    public class World {
+    public static class World {
         private final @NotNull UUID uuid;
 
         public World(@NotNull UUID uuid) {
