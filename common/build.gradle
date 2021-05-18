@@ -1,1 +1,6 @@
-description = "Used across Resonance"
+dependencies {
+    compileOnly group: 'net.kyori', name: 'adventure-api', version: '4.7.0'
+    compileOnly group: 'net.kyori', name: 'adventure-text-serializer-legacy', version: '4.7.0'
+    api group: 'org.spongepowered', name: 'configurate-core', version: '4.1.1'
+    api 'org.spongepowered:configurate-hocon:4.1.1'
+}

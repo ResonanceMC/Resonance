@@ -1,10 +1,5 @@
 package net.thiccaxe.resonance.model;
 
-import net.thiccaxe.resonance.plugin.ResonancePlugin;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 public class CachedField<F, V>  {
 
     private long modifyTime;

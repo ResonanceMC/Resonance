@@ -1,17 +1,15 @@
 package net.thiccaxe.resonance.feature;
 
 
+import net.thiccaxe.resonance.logging.ResonanceLogger;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
-
-import java.util.List;
 
 /**
  * Represents a feature that may be enabled or disabled.
  *
  * Inspired by Plan (https://github.com/plan-player-analytics/Plan).
  */
-public interface ResonanceFeature {
+public interface Feature {
 
     /**
      * Enable the feature.
@@ -33,16 +31,8 @@ public interface ResonanceFeature {
     boolean enabled();
 
     /**
-     * Return the name of the feature.
-     *
-     * @return the name
+     * Returns a logger specific to this Feature.
+     * May be the plugin logger.
      */
-    @NotNull String name();
-
-    /**
-     * Return a description of the feature, separated into lines if necessary,
-     *
-     * @return the description.
-     */
-    @NotNull @Unmodifiable List<String> description();
+    @NotNull ResonanceLogger logger();
 }

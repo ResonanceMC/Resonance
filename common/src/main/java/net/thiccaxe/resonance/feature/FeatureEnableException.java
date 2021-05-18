@@ -8,7 +8,7 @@ package net.thiccaxe.resonance.feature;
 public class FeatureEnableException extends Exception {
 
     /**
-     * Thrown when a {@link ResonanceFeature} fails to enable.
+     * Thrown when a {@link Feature} fails to enable.
      * @param message the exception message
      */
     public FeatureEnableException(String message) {
@@ -16,7 +16,7 @@ public class FeatureEnableException extends Exception {
     }
 
     /**
-     * Thrown when a {@link ResonanceFeature} fails to enable.
+     * Thrown when a {@link Feature} fails to enable.
      * @param message the exception message
      * @param cause the cause of the exception
      */

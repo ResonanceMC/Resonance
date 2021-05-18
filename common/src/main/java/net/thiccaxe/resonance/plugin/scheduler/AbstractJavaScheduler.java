@@ -19,7 +19,7 @@ public abstract class AbstractJavaScheduler implements ResonanceScheduler {
         this.scheduler.setRemoveOnCancelPolicy(true);
         this.schedulerWorkerPool = new ErrorReportingExecutor(Executors.newCachedThreadPool(new ThreadFactoryBuilder()
                 .setDaemon(true)
-                .setNameFormat("resonance[-scheduler-worker-%d")
+                .setNameFormat("resonance-scheduler-worker-%d")
                 .build()
         ));
         this.worker = new ForkJoinPool(32, ForkJoinPool.defaultForkJoinWorkerThreadFactory, (t, e) -> e.printStackTrace(), false);

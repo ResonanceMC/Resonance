@@ -7,14 +7,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.*;
 import net.thiccaxe.resonance.feature.FeatureEnableException;
-import net.thiccaxe.resonance.feature.ResonanceFeature;
+import net.thiccaxe.resonance.feature.Feature;
 import net.thiccaxe.resonance.plugin.ResonancePlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 
-public class ResonanceServer implements ResonanceFeature {
+public class ResonanceServer implements Feature {
     private final @NotNull String featureName = "ResonanceServer";
     private final @NotNull @Unmodifiable List<String> featureDescription = List.of(
             "Webserver for Resonance,",

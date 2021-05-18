@@ -1,10 +1,10 @@
 package net.thiccaxe.resonance.implementation.paper;
 
 import net.thiccaxe.resonance.feature.FeatureEnableException;
-import net.thiccaxe.resonance.feature.ResonanceFeature;
+import net.thiccaxe.resonance.feature.Feature;
 import net.thiccaxe.resonance.implementation.paper.logging.PaperLogger;
 import net.thiccaxe.resonance.implementation.paper.scheduler.PaperScheduler;
-import net.thiccaxe.resonance.plugin.logging.ResonanceLogger;
+import net.thiccaxe.resonance.logging.ResonanceLogger;
 import net.thiccaxe.resonance.plugin.ResonancePlugin;
 import net.thiccaxe.resonance.plugin.scheduler.ResonanceScheduler;
 import net.thiccaxe.resonance.server.ResonanceServer;
@@ -22,7 +22,7 @@ public class ResonancePaper extends JavaPlugin implements ResonancePlugin {
     private @NotNull final ResonanceServer server = new ResonanceServer(this, 8888);
 
 
-    private @NotNull final @Unmodifiable List<ResonanceFeature> features = List.of(
+    private @NotNull final @Unmodifiable List<Feature> features = List.of(
             scheduler,
             server
     );
@@ -33,8 +33,6 @@ public class ResonancePaper extends JavaPlugin implements ResonancePlugin {
             enable();
         } catch (FeatureEnableException e) {
             logger.warn("Something bad has probably happened ...");
-            logger.warn(name());
-            description().forEach(logger::warn);
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
         }
@@ -71,27 +69,23 @@ public class ResonancePaper extends JavaPlugin implements ResonancePlugin {
         enabled = false;
     }
 
-    public void enableFeatures(List<ResonanceFeature> features) {
-        for (ResonanceFeature feature : features) {
+    public void enableFeatures(List<Feature> features) {
+        for (Feature feature : features) {
             try {
                 feature.enable();
             } catch (FeatureEnableException e) {
                 logger.warn("Check for the feature that errored during enabling ...");
-                logger.warn(feature.name());
-                feature.description().forEach(logger::warn);
                 e.printStackTrace();
             }
         }
     }
 
-    private void disableFeatures(List<ResonanceFeature> features) {
-        for (ResonanceFeature feature : features) {
+    private void disableFeatures(List<Feature> features) {
+        for (Feature feature : features) {
             try {
                 feature.disable();
             } catch (Exception e) {
                 logger.warn("Check for the feature that errored during disabling ...");
-                logger.warn(feature.name());
-                feature.description().forEach(logger::warn);
                 e.printStackTrace();
             }
         }

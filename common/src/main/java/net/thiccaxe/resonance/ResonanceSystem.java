@@ -1,7 +1,8 @@
 package net.thiccaxe.resonance;
 
 import net.thiccaxe.resonance.feature.FeatureEnableException;
-import net.thiccaxe.resonance.feature.ResonanceFeature;
+import net.thiccaxe.resonance.feature.Feature;
+import net.thiccaxe.resonance.logging.ResonanceLogger;
 import net.thiccaxe.resonance.plugin.logging.ResonanceLogger;
 import net.thiccaxe.resonance.server.ResonanceServer;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 
-public class ResonanceSystem implements ResonanceFeature {
+public class ResonanceSystem implements Feature {
     private final @NotNull String featureName = getClass().getSimpleName();
     private final @NotNull @Unmodifiable List<String> featureDescription = List.of("The base for all of Resonance,",
             "Contains various necessary subsystems");
@@ -37,8 +38,8 @@ public class ResonanceSystem implements ResonanceFeature {
         enabled = true;
     }
 
-    protected void enableFeatures(@NotNull ResonanceFeature @NotNull... features)  {
-        for (ResonanceFeature feature : features) {
+    protected void enableFeatures(@NotNull Feature @NotNull... features)  {
+        for (Feature feature : features) {
             try {
                 feature.enable();
             } catch (FeatureEnableException e) {
@@ -58,8 +59,8 @@ public class ResonanceSystem implements ResonanceFeature {
         enabled = false;
     }
 
-    protected void disableFeatures(@NotNull ResonanceFeature @NotNull... features) {
-        for (ResonanceFeature feature : features) {
+    protected void disableFeatures(@NotNull Feature @NotNull... features) {
+        for (Feature feature : features) {
             try {
                 feature.disable();
             } catch (Exception e) {

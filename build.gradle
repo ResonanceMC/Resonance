@@ -1,68 +1,47 @@
-import net.kyori.indra.IndraExtension
-
 plugins {
-    // indra - common utilities for building/publishing (yoink: https://github.com/Minestom/Minestom)
-    id "net.kyori.indra" version "2.0.3" apply false
-    id "net.kyori.indra.publishing" version "2.0.3" apply false
-    id "com.github.johnrengelman.shadow" version '5.2.0' apply false
-
-
+    id 'net.minecrell.licenser' version '0.4.1' apply false
 }
 
-group = 'net.thiccaxe.resonance'
-version = '1.2.0-SNAPSHOT'
-description = "A proximity chat plugin."
+defaultTasks 'licenseFormat', 'build'
 
 subprojects {
-    apply plugin: "net.kyori.indra"
-    apply plugin: "net.kyori.indra.publishing"
-    apply plugin: "com.github.johnrengelman.shadow"
-    apply plugin: "java"
-    it.version = project.version
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'net.minecrell.licenser'
+
+    group = 'net.thiccaxe.resonance'
+    version = '5.3-SNAPSHOT'
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    jar {
+        from '../LICENSE'
+    }
+
+    project.ext.majorVersion = '1'
+    project.ext.minorVersion = '2'
+    project.ext.patchVersion = '0'
+    project.ext.apiVersion = project.ext.majorVersion + '.' + project.ext.minorVersion
+    project.ext.fullVersion = project.ext.apiVersion + '.' + project.ext.patchVersion
+
+    license {
+        header = rootProject.file('HEADER.txt')
+        include '**/*.java'
+        newLine = true
+    }
+
     repositories {
         mavenCentral()
-        maven { url "https://papermc.io/repo/repository/maven-public/" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
     dependencies {
         implementation 'org.jetbrains:annotations:20.1.0'
-        implementation "com.google.guava:guava:30.1.1-jre"
-        compileOnly 'io.netty:netty-all:4.1.63.Final'
-        if (project.name != "common")
-        implementation project(":common")
+        compileOnly group: 'io.netty', name: 'netty-all', version: '4.1.63.Final'
     }
-
-    extensions.configure(IndraExtension.class) {
-        it.javaVersions {
-            it.target 11
-        }
-
-        it.github("thiccaxe", "Resonance") {
-            it.ci(false)
-        }
-
-        it.mitLicense()
-
-        it.configurePublications {
-            it.pom {
-                it.developers {
-                    it.developer {
-                        it.id.set("thiccaxe")
-                    }
-                    it.developer {
-                        it.id.set("Razboy20")
-                    }
-                }
-            }
-        }
-    }
-
-
-
-}
-
-
-
-repositories {
-    mavenCentral()
 }

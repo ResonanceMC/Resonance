@@ -1,7 +1,6 @@
 package net.thiccaxe.resonance.plugin.scheduler;
 
-import net.thiccaxe.resonance.ResonanceSystem;
-import net.thiccaxe.resonance.feature.ResonanceFeature;
+import net.thiccaxe.resonance.feature.Feature;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
-public interface ResonanceScheduler extends ResonanceFeature {
+public interface ResonanceScheduler extends Feature {
     @NotNull String featureName = "ResonanceScheduler";
     @NotNull @Unmodifiable List<String> featureDescription = List.of(
             "Handles tasks that need to be run async or sync,",
@@ -67,6 +66,27 @@ public interface ResonanceScheduler extends ResonanceFeature {
      * @return the resultant task instance
      */
     SchedulerTask asyncRepeating(Runnable task, long interval, TimeUnit unit);
+
+    /**
+     * Executes the given task with a delay.
+     *
+     * @param task the task
+     * @param delay the delay
+     * @param unit the unit of delay
+     * @return the resultant task instance
+     */
+    SchedulerTask syncLater(Runnable task, long delay, TimeUnit unit);
+
+    /**
+     * Executes the given task repeatedly at a given interval.
+     *
+     * @param task the task
+     * @param interval the interval
+     * @param unit the unit of interval
+     * @return the resultant task instance
+     */
+    SchedulerTask syncRepeating(Runnable task, long interval, TimeUnit unit);
+
 
     /**
      * Shuts down the scheduler instance.
