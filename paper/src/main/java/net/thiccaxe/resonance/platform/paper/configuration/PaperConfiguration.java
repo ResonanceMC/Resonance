@@ -23,28 +23,27 @@
  * SOFTWARE.
  */
 
-package net.thiccaxe.resonance.logging;
+package net.thiccaxe.resonance.platform.paper.configuration;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
+import net.thiccaxe.resonance.configuration.DefaultConfiguration;
+import net.thiccaxe.resonance.plugin.ResonancePlugin;
 import org.jetbrains.annotations.NotNull;
 
-public interface ResonanceLogger extends Audience {
+import java.io.File;
+import java.io.InputStream;
 
-    void info(@NotNull String message);
+public class PaperConfiguration extends DefaultConfiguration {
+    public PaperConfiguration(@NotNull ResonancePlugin plugin, @NotNull File dataFolder) {
+        super(plugin, dataFolder);
+    }
 
-    void info(@NotNull ComponentLike message);
+    @Override
+    protected InputStream getDefaultConfigInputStream() {
+        return getClass().getClassLoader().getResourceAsStream("config.conf");
+    }
 
-    void warn(@NotNull String message);
-
-    void warn(@NotNull ComponentLike message);
-
-    void error(@NotNull String message);
-
-    void error(@NotNull ComponentLike message);
-
-
-    @NotNull String prefix();
-
+    @Override
+    protected String getFileName() {
+        return "config.conf";
+    }
 }

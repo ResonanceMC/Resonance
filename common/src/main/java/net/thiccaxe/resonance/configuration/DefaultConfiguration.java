@@ -23,28 +23,34 @@
  * SOFTWARE.
  */
 
-package net.thiccaxe.resonance.logging;
+package net.thiccaxe.resonance.configuration;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
+import net.thiccaxe.resonance.logging.ResonanceLogger;
+import net.thiccaxe.resonance.plugin.ResonancePlugin;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.ConfigurationNode;
 
-public interface ResonanceLogger extends Audience {
+import java.io.File;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
-    void info(@NotNull String message);
+public abstract class DefaultConfiguration extends ResonanceConfigurationImpl<DefaultConfigValues> {
+    private final DefaultConfigValues values = new DefaultConfigValues();
 
-    void info(@NotNull ComponentLike message);
+    protected DefaultConfiguration(@NotNull ResonancePlugin plugin, @NotNull File dataFolder) {
+        super(plugin, dataFolder);
+    }
 
-    void warn(@NotNull String message);
-
-    void warn(@NotNull ComponentLike message);
-
-    void error(@NotNull String message);
-
-    void error(@NotNull ComponentLike message);
+    @Override
+    protected void getConfigValues(@NotNull ConfigurationNode root) {
+        values.setHost(new InetSocketAddress(root.node("port").getInt(8888)));
+        values.setAddress(InetSocketAddress.createUnresolved(root.node("address").getString("localhost"), 80).getAddress());
+    }
 
 
-    @NotNull String prefix();
+    @Override
+    public DefaultConfigValues config() {
+        return values;
+    }
 
 }

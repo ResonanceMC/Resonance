@@ -2,3 +2,5 @@ rootProject.name = 'Resonance'
 
 include 'common'
 include 'paper'
+include 'paper'
+

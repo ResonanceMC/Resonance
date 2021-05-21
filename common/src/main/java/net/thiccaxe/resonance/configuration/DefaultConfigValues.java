@@ -23,28 +23,39 @@
  * SOFTWARE.
  */
 
-package net.thiccaxe.resonance.logging;
+package net.thiccaxe.resonance.configuration;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import org.jetbrains.annotations.NotNull;
 
-public interface ResonanceLogger extends Audience {
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
-    void info(@NotNull String message);
+public class DefaultConfigValues implements ConfigValues {
+    /**
+     * Where to start the server on
+     */
+    private @NotNull InetSocketAddress host = InetSocketAddress.createUnresolved("0.0.0.0", 8080);
+    /**
+     * Where incoming connections can be expected from.
+     */
+    private @NotNull InetAddress address = InetSocketAddress.createUnresolved("127.0.0.1", 0).getAddress();
 
-    void info(@NotNull ComponentLike message);
+    public DefaultConfigValues() {
+    }
 
-    void warn(@NotNull String message);
+    public @NotNull InetSocketAddress getHost() {
+        return host;
+    }
 
-    void warn(@NotNull ComponentLike message);
+    public void setHost(@NotNull InetSocketAddress host) {
+        this.host = host;
+    }
 
-    void error(@NotNull String message);
+    public @NotNull InetAddress getAddress() {
+        return address;
+    }
 
-    void error(@NotNull ComponentLike message);
-
-
-    @NotNull String prefix();
-
+    public void setAddress(@NotNull InetAddress address) {
+        this.address = address;
+    }
 }

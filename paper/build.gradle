@@ -1,21 +1,8 @@
-plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
-}
-
 repositories {
     maven { url 'https://papermc.io/repo/repository/maven-public/' }
 }
 
 dependencies {
-    implementation project(':common')
+    implementation project(":common")
     compileOnly "com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT"
-}
-
-shadowJar {
-    relocate 'net.kyori.adventure', 'net.thiccaxe.resonance.lib.adventure'
-    relocate 'ninja.leaping.configurate', 'net.thiccaxe.resonance.lib.configurate'
-}
-
-artifacts {
-    archives shadowJar
 }

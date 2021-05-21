@@ -23,20 +23,63 @@
  * SOFTWARE.
  */
 
-package net.thiccaxe.resonance.plugin;
+package net.thiccaxe.resonance.platform.paper.scheduling;
 
-import net.thiccaxe.resonance.configuration.ResonanceConfiguration;
-import net.thiccaxe.resonance.feature.Feature;
 import net.thiccaxe.resonance.logging.ResonanceLogger;
-import net.thiccaxe.resonance.scheduling.ResonanceScheduler;
+import net.thiccaxe.resonance.platform.paper.ResonancePaper;
+import net.thiccaxe.resonance.scheduling.AbstractJavaScheduler;
+import net.thiccaxe.resonance.scheduling.SchedulerTask;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-public interface ResonancePlugin extends Feature {
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
-    @NotNull ResonanceLogger logger();
+public class PaperScheduler extends AbstractJavaScheduler {
+    private boolean enabled = false;
 
-    @NotNull ResonanceScheduler scheduler();
 
-    @NotNull ResonanceConfiguration configuration();
+    private final ResonancePaper plugin;
 
+
+    public PaperScheduler(ResonancePaper plugin) {
+        super();
+        this.plugin = plugin;
+
+    }
+
+    @Override
+    public Executor sync() {
+        return Bukkit.getScheduler().getMainThreadExecutor(plugin);
+    }
+
+    @Override
+    public SchedulerTask syncLater(Runnable task, long delay, TimeUnit unit) {
+        return null;
+    }
+
+    @Override
+    public SchedulerTask syncRepeating(Runnable task, long interval, TimeUnit unit) {
+        return null;
+    }
+
+    @Override
+    public void enable()  {
+
+    }
+
+    @Override
+    public void disable() {
+
+    }
+
+    @Override
+    public boolean enabled() {
+        return false;
+    }
+
+    @Override
+    public @NotNull ResonanceLogger logger() {
+        return plugin.logger();
+    }
 }

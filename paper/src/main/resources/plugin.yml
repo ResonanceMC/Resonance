@@ -1,4 +1,4 @@
-main: net.thiccaxe.resonance.implementation.paper.ResonancePaper
+main: net.thiccaxe.resonance.platform.paper.ResonancePaper
 name: Resonance
 version: ${project.version}
 api-version: 1.16
