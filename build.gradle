@@ -3,16 +3,14 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0' apply false
 }
 
-defaultTasks 'licenseFormat', 'build'
-
-subprojects {
+allprojects {
+    apply plugin: 'net.minecrell.licenser'
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
-    apply plugin: 'net.minecrell.licenser'
-    apply plugin: 'com.github.johnrengelman.shadow'
 
     group = 'net.thiccaxe.resonance'
     version = '1.2.0-SNAPSHOT'
+
 
     sourceCompatibility = 11
     targetCompatibility = 11
@@ -37,16 +35,45 @@ subprojects {
         newLine = true
     }
 
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/thiccaxe/Resonance")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                from(components.java)
+            }
+        }
+    }
+
+
     repositories {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
+}
+
+
+subprojects {
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    defaultTasks 'licenseFormat', 'build'
 
     dependencies {
+        // Jetbrains Annotations
         implementation 'org.jetbrains:annotations:20.1.0'
-        compileOnly group: 'io.netty', name: 'netty-all', version: '4.1.63.Final'
-        compileOnly("com.google.guava:guava:30.1.1-jre")
-    }
 
-    shadow
+        // Netty
+        compileOnly group: 'io.netty', name: 'netty-all', version: '4.1.63.Final'
+
+        // Google Guava
+        compileOnly group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+    }
 }

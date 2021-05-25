@@ -25,4 +25,4 @@ hs_err_pid*
 ### Gradle template
 .gradle
 **/build/
-!src/**/build/
+!gradle/wrapper/
