@@ -1,6 +1,22 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { url "https://maven.fabricmc.net" }
+        maven {url "https://repo.spongepowered.org/maven/"}
+    }
+    plugins {
+        id("com.github.johnrengelman.shadow") version "7.0.0"
+    }
+}
+
 rootProject.name = 'Resonance'
 
-include 'common'
-include 'paper'
-include 'paper'
+[
+    "common",
+    "spigot",
+    "fabric"
+].forEach {
+    include("resonance-$it")
+    project(":resonance-$it").projectDir = file(it)
+}
 

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "resonance",
+  "version": "${version}",
+  "name": "Resonance",
+  "description": "Amojus.",
+  "authors": [
+    "thiccaxe"
+  ],
+  "contact": {
+    "website": "https://pleaserickroll.me",
+    "homepage": "https://pleaserickroll.me",
+    "repo": "https://github.com/ResonanceMC/Resonance",
+    "sources": "https://github.com/ResonanceMC/Resonance",
+    "issues": "https://github.com/ResonanceMC/Resonance/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/resonance/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.thiccaxe.resonance.fabric.ResonanceFabricClient"
+    ],
+    "main": [
+      "net.thiccaxe.resonance.fabric.ResonanceFabric"
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": ">=1.16.0"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/EWQqGrfWhb"
+      }
+    }
+  }
+}

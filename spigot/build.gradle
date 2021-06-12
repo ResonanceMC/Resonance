@@ -1,0 +1,37 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+repositories {
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+    }
+    maven {
+        url 'https://papermc.io/repo/repository/maven-public'
+    }
+}
+
+dependencies {
+    implementation project(':resonance-common')
+
+    compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
+    implementation 'io.papermc:paperlib:1.0.6'
+}
+
+processResources {
+    filesMatching("plugin.yml") {
+        expand 'version': project.ext.fullVersion
+    }
+}
+
+shadowJar {
+    archiveClassifier.set(null)
+    archiveFileName.set("Resonance-${project.name}-${project.ext.fullVersion}.jar")
+
+    relocate 'com.typesafe.config', 'net.thiccaxe.resonance.lib.com.typesafe.config'  // Doesn't seem to work
+    relocate 'io.leangen.geantyref', 'net.thiccaxe.resonance.lib.geantyref' // Doesn't seem to work
+    relocate 'io.papermc.lib', 'net.thiccaxe.resonance.lib.paperlib'
+    relocate 'org.spongepowered.configurate', 'net.thiccaxe.resonance.lib.configurate'
+    relocate 'org.slf4j', 'net.thiccaxe.resonance.lib.slf4j'
+}
+
