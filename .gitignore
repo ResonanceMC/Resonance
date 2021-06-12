@@ -39,3 +39,7 @@ gradle-app.setting
 # IDEA files
 .idea/
 **/out/
+
+# server test files
+run/
+minecraft_data/

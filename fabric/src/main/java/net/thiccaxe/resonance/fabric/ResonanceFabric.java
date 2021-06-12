@@ -7,13 +7,14 @@ import net.thiccaxe.resonance.Resonance;
 import net.thiccaxe.resonance.platform.Platform;
 import net.thiccaxe.resonance.platform.Scheduler;
 import net.thiccaxe.resonance.platform.logger.JavaLogger;
+import net.thiccaxe.resonance.platform.logger.SystemLogger;
 
 import java.nio.file.Path;
 
 public class ResonanceFabric implements ModInitializer, Platform {
     private Resonance resonance;
     private Path dataFolder;
-    private JavaLogger logger;
+    private SystemLogger logger;
 
     private FabricScheduler scheduler;
 
@@ -21,7 +22,7 @@ public class ResonanceFabric implements ModInitializer, Platform {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.dataFolder = FabricLoader.getInstance().getConfigDir().resolve(name());
-            this.logger = new JavaLogger(java.util.logging.Logger.getLogger(name()));
+            this.logger = new SystemLogger(name());
             logger().info(name() + " v" + version());
             this.resonance = new Resonance(this);
         });
@@ -39,7 +40,7 @@ public class ResonanceFabric implements ModInitializer, Platform {
     }
 
     @Override
-    public JavaLogger logger() {
+    public SystemLogger logger() {
         return logger;
     }
 

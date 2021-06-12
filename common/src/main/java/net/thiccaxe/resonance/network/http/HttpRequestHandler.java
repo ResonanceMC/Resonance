@@ -35,7 +35,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
                     HttpResponseStatus.OK,
                     Unpooled.copiedBuffer(CONTENT)
             );
-            response.headers().set(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.TEXT_HTML);
+            response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");
             final boolean isKeepAlive = HttpUtil.isKeepAlive(request);
 
             if (isKeepAlive) {

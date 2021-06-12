@@ -20,7 +20,9 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.incubator.channel.uring.IOUring;
 import io.netty.incubator.channel.uring.IOUringEventLoopGroup;
 import io.netty.incubator.channel.uring.IOUringServerSocketChannel;
+import net.thiccaxe.resonance.network.PacketProcessor;
 import net.thiccaxe.resonance.network.http.HttpRequestHandler;
+import net.thiccaxe.resonance.network.websocket.WebSocketChannel;
 import net.thiccaxe.resonance.network.websocket.WebSocketPacketDecoder;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,6 +41,12 @@ public class NettyServer {
     private int port;
 
     private ServerSocketChannel serverChannel;
+    private final PacketProcessor packetProcessor;
+
+    public NettyServer(PacketProcessor packetProcessor) {
+        this.packetProcessor = packetProcessor;
+    }
+
 
     public void init() {
         if (initialized) {
@@ -102,6 +110,7 @@ public class NettyServer {
                         pipeline.addLast("http-request-handler", new HttpRequestHandler("/ws"));
                         pipeline.addLast("ws-server-proto-handler", new WebSocketServerProtocolHandler("/ws"));
                         pipeline.addLast("websocket-packet-decoder", new WebSocketPacketDecoder());
+                        pipeline.addLast("websocket-channel", new WebSocketChannel(packetProcessor));
                     }
                 });
     }
