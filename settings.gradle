@@ -17,6 +17,6 @@ rootProject.name = 'Resonance'
     "fabric"
 ].forEach {
     include("resonance-$it")
-    project(":resonance-$it").projectDir = file(it)
+    project(":resonance-$it").projectDir = "$rootDir/$it" as File
 }
 

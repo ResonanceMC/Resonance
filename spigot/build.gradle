@@ -20,13 +20,14 @@ dependencies {
 
 processResources {
     filesMatching("plugin.yml") {
-        expand 'version': project.ext.fullVersion
+        expand 'version': project.version
     }
 }
 
-shadowJar {
+build.dependsOn shadowJar {
     archiveClassifier.set(null)
-    archiveFileName.set("Resonance-${project.name}-${project.ext.fullVersion}.jar")
+    destinationDirectory = file '../build/release'
+    archiveFileName.set("Resonance-${project.version}-spigot.jar")
 
     relocate 'com.typesafe.config', 'net.thiccaxe.resonance.lib.com.typesafe.config'  // Doesn't seem to work
     relocate 'io.leangen.geantyref', 'net.thiccaxe.resonance.lib.geantyref' // Doesn't seem to work

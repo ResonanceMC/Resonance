@@ -47,7 +47,8 @@ tasks {
     remapJar {
         archiveClassifier.set(null)
         input.set(shadowJar.archiveFile)
-        archiveFileName.set("Resonance-${project.name}-${project.version}.jar")
+        destinationDirectory = file '../build/release'
+        archiveFileName.set("Resonance-${project.version}-fabric-${project.minecraft_version}.jar")
     }
     build {
         dependsOn(remapJar)

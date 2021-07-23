@@ -25,5 +25,5 @@ jobs:
       run: ./gradlew shadowJar
     - uses: actions/upload-artifact@v2
       with:
-        name: Package
-        path: "*/build/libs"
+        name: ResonanceBuild
+        path: "*/build/release"
