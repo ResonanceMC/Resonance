@@ -26,4 +26,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: ResonanceBuild
-        path: build/release/*
+        path: build/release
