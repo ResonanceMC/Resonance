@@ -1,7 +1,118 @@
+//plugins {
+//    id 'java'
+//    id "com.github.johnrengelman.shadow" version "6.1.0"
+//}
+//
+//group 'dev.razboy.resonance'
+//version '1.0.0'
+//targetCompatibility = '16'
+//sourceCompatibility = '16'
+//repositories {
+//    mavenCentral()
+//    maven {
+//        name 'papermc'
+//        url 'https://papermc.io/repo/repository/maven-public/'
+//    }
+//    maven {
+//        name = "sonatype-oss-snapshots"
+//        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+//    }
+//}
+//
+//dependencies {
+//    compileOnly 'com.destroystokyo.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
+//    compileOnly ('io.netty:netty-all:4.1.60.Final')
+//    implementation ("net.kyori:adventure-text-minimessage:4.0.0-SNAPSHOT")
+//    implementation (group: 'org.json', name: 'json', version: '20201115')
+//    compileOnly ("com.google.guava:guava:30.1-jre")
+//}
+//
+//task deploy (dependsOn: build, type: Copy) {
+//    from "build/libs"
+//    into "src/test/server/plugins"
+//    include "*.jar"
+//}
+// plugins {
+//     id 'java'
+//     id "com.github.johnrengelman.shadow" version "6.1.0"
+// }
+
+// group 'dev.razboy.resonance'
+// version '1.0.0'
+// targetCompatibility = '11'
+// sourceCompatibility = '11'
+// repositories {
+//     mavenCentral()
+//     maven {
+//         name 'papermc'
+//         url 'https://papermc.io/repo/repository/maven-public/'
+//     }
+//     maven {
+//         name = "sonatype-oss-snapshots"
+//         url = "https://oss.sonatype.org/content/repositories/snapshots/"
+//     }
+// }
+
+// dependencies {
+//     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+//     compileOnly ('io.netty:netty-all:4.1.60.Final')
+//     implementation ("net.kyori:adventure-text-minimessage:4.0.0-SNAPSHOT")
+//     implementation (group: 'org.json', name: 'json', version: '20201115')
+//     compileOnly ("com.google.guava:guava:30.1-jre")
+
+// }
+
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+}
+
+version = 0.1
+
+repositories {
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+    }
+    maven {
+        url 'https://papermc.io/repo/repository/maven-public'
+    }
+}
+
+dependencies {
+    //implementation project(':resonance-common')
+
+    compileOnly ('io.netty:netty-all:4.1.60.Final')
+    //compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
+    implementation 'io.papermc:paperlib:1.0.6'
+    implementation ("net.kyori:adventure-text-minimessage:4.0.0-SNAPSHOT")
+    implementation (group: 'org.json', name: 'json', version: '20201115')
+    compileOnly ("com.google.guava:guava:30.1-jre")
+}
+
+processResources {
+    filesMatching("plugin.yml") {
+        expand 'version': project.version
+    }
+}
+
+build.dependsOn shadowJar {
+    archiveClassifier.set(null)
+    destinationDirectory = file 'build/release'
+    archiveFileName.set("Resonance-${project.version}-spigot.jar")
+
+    // relocate 'com.typesafe.config', 'net.thiccaxe.resonance.lib.com.typesafe.config'  // Doesn't seem to work
+    // relocate 'io.leangen.geantyref', 'net.thiccaxe.resonance.lib.geantyref' // Doesn't seem to work
+    // relocate 'io.papermc.lib', 'net.thiccaxe.resonance.lib.paperlib'
+    // relocate 'org.spongepowered.configurate', 'net.thiccaxe.resonance.lib.configurate'
+    // relocate 'org.slf4j', 'net.thiccaxe.resonance.lib.slf4j'
+}
+
+
 subprojects {
     apply plugin: 'java-library'
 
-    group = "net.thiccaxe"
+    group = "dev.razboy.resonance"
     version = coreVersion
     // project.ext.majorVersion = '1'
     // project.ext.minorVersion = '0'
@@ -13,14 +124,17 @@ subprojects {
     })
 
     java {
-        targetCompatibility = JavaVersion.VERSION_11
-        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_16
+        sourceCompatibility = JavaVersion.VERSION_16
     }
 
     repositories {
         mavenCentral()
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+        maven {
+            url 'https://papermc.io/repo/repository/maven-public/'
         }
     }
 }

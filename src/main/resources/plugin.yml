@@ -1,0 +1,9 @@
+main: dev.razboy.resonance.Resonance
+name: Resonance
+version: 1.0.0
+api-version: 1.16
+commands:
+  token:
+    description: "token"
+  minimessage:
+    description: "parse some minimessage"

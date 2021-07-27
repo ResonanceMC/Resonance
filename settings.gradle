@@ -1,22 +1,2 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven { url "https://maven.fabricmc.net" }
-        maven {url "https://repo.spongepowered.org/maven/"}
-    }
-    plugins {
-        id("com.github.johnrengelman.shadow") version "7.0.0"
-    }
-}
-
-rootProject.name = 'Resonance'
-
-[
-    "common",
-    "spigot",
-    "fabric"
-].forEach {
-    include("resonance-$it")
-    project(":resonance-$it").projectDir = "$rootDir/$it" as File
-}
+rootProject.name = 'Resonance-MC-Bukkit'
 

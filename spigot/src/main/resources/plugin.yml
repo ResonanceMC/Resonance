@@ -1,3 +1,0 @@
-name: "Resonance"
-main: "net.thiccaxe.resonance.spigot.ResonanceSpigot"
-version: "${version}"
