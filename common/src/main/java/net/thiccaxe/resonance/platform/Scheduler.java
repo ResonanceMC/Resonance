@@ -6,6 +6,8 @@ public interface Scheduler {
 
     Task scheduleTask(Runnable runnable);
 
+    Task scheduleRepeatingTask(Runnable runnable, int delay, int period);
+
     interface Task {
         void cancel();
     }

@@ -2,9 +2,9 @@ package net.thiccaxe.resonance.network.websocket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import net.thiccaxe.resonance.network.PacketProcessor;
 import net.thiccaxe.resonance.network.packet.InboundPacket;
-import net.thiccaxe.resonance.network.player.NettyWebSocketConnection;
+import net.thiccaxe.resonance.network.packet.processor.PacketProcessor;
+import net.thiccaxe.resonance.network.user.WebSocketConnection;
 import org.jetbrains.annotations.NotNull;
 
 public class WebSocketChannel extends SimpleChannelInboundHandler<InboundPacket> {
@@ -23,7 +23,7 @@ public class WebSocketChannel extends SimpleChannelInboundHandler<InboundPacket>
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, InboundPacket packet) throws Exception {
         try {
-            System.out.println(packet.getId() + ", " + packet.getBody());
+            //System.out.println(packet.getId() + ", " + packet.getBody());
             packetProcessor.process(ctx, packet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,9 +32,9 @@ public class WebSocketChannel extends SimpleChannelInboundHandler<InboundPacket>
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        NettyWebSocketConnection connection = packetProcessor.removePlayerConnection(ctx);
+        WebSocketConnection connection = packetProcessor.removePlayerConnection(ctx);
         if (connection != null) {
-            //stuff
+            // stuff
         }
     }
 

@@ -1,4 +1,4 @@
-package net.thiccaxe.resonance.network.websocket;
+package net.thiccaxe.resonance.network.netty.codec;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import net.thiccaxe.resonance.network.packet.InboundPacket;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WebSocketPacketDecoder extends MessageToMessageDecoder<TextWebSocketFrame> {
 
@@ -23,15 +24,8 @@ public class WebSocketPacketDecoder extends MessageToMessageDecoder<TextWebSocke
             JsonElement jsonElement = GSON.fromJson(text, JsonElement.class);
 
             if (jsonElement.isJsonObject()) {
-                System.out.println("debug-01");
+                System.out.println(jsonElement.getAsJsonObject().toString());
                 out.add(getInboundPacket(jsonElement.getAsJsonObject()));
-            } else if (jsonElement.isJsonArray()) {
-                System.out.println("debug-02");
-                for (JsonElement element : jsonElement.getAsJsonArray()) {
-                    if (element.isJsonObject()) {
-                        out.add(getInboundPacket(element.getAsJsonObject()));
-                    }
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,10 +34,23 @@ public class WebSocketPacketDecoder extends MessageToMessageDecoder<TextWebSocke
 
     private InboundPacket getInboundPacket(JsonObject jsonObject) {
         if (jsonObject.has("id") && jsonObject.has("body") &&
-            jsonObject.get("id").getAsInt() >= 0 && jsonObject.get("body").isJsonObject()
+            jsonObject.getAsJsonPrimitive("id").isNumber() && jsonObject.get("body").isJsonObject()
         ) {
-            return new InboundPacket(jsonObject.get("id").getAsInt(), jsonObject.getAsJsonObject("body"));
+            return new InboundPacket(
+                    jsonObject.getAsJsonPrimitive("id").getAsNumber().intValue(),
+                    jsonObject.getAsJsonObject("body"),
+                    optionalField(jsonObject, "messageId"),
+                    optionalField(jsonObject, "bearer")
+            );
         }
         throw new IllegalArgumentException("Bad Packet");
+    }
+
+    private Optional<String> optionalField(JsonObject jsonObject, String field) {
+        String value = null;
+        if (jsonObject.has(field) && jsonObject.getAsJsonPrimitive(field).isString()) {
+            value = jsonObject.getAsJsonPrimitive(field).getAsString();
+        }
+        return Optional.ofNullable(value);
     }
 }

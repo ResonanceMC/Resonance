@@ -7,6 +7,7 @@ import net.thiccaxe.resonance.platform.logger.JavaLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.nio.file.Path;
+import java.util.UUID;
 
 public class ResonanceSpigot extends JavaPlugin implements Platform {
     private Resonance resonance;
@@ -19,6 +20,11 @@ public class ResonanceSpigot extends JavaPlugin implements Platform {
         logger().info(name() + " v" + version());
         this.scheduler = new SpigotScheduler(this);
         this.resonance = new Resonance(this);
+        final UUID uuid = UUID.randomUUID();
+        resonance.authManager().generateToken(uuid);
+        getLogger().info(resonance.authManager().getLinkedToken(uuid).toString());
+        resonance.authManager().invalidateToken(resonance.authManager().getLinkedToken(uuid).getValue());
+        getLogger().info(resonance.authManager().getLinkedToken(uuid).toString());
     }
 
     @Override

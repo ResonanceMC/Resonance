@@ -22,6 +22,11 @@ public class FabricScheduler implements Scheduler {
         return null;
     }
 
+    @Override
+    public Task scheduleRepeatingTask(Runnable runnable, int delay, int period) {
+        return null;
+    }
+
     public static class FabricTask implements Task {
         private final Future<?> result;
 

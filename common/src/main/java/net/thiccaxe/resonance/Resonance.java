@@ -1,34 +1,66 @@
 package net.thiccaxe.resonance;
 
+import net.thiccaxe.resonance.auth.uuid.UuidAuth;
+import net.thiccaxe.resonance.auth.uuid.UuidToken;
 import net.thiccaxe.resonance.config.ConfigManager;
-import net.thiccaxe.resonance.network.PacketProcessor;
 import net.thiccaxe.resonance.network.netty.NettyServer;
+import net.thiccaxe.resonance.network.packet.processor.PacketProcessor;
 import net.thiccaxe.resonance.platform.Platform;
+import net.thiccaxe.resonance.platform.Scheduler;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Resonance {
     private final @NotNull Platform platform;
     private final @NotNull ConfigManager configManager;
+    private final @NotNull UuidAuth authManager;
     private final @NotNull NettyServer nettyServer;
-    private final @NotNull PacketProcessor packetProcessor = new PacketProcessor();
+    private final @NotNull Scheduler.Task serverTask;
+    private final @NotNull PacketProcessor packetProcessor;
+    private final @NotNull Scheduler.Task packetTask;
 
     public Resonance(final @NotNull Platform platform) {
         this.platform = platform;
         this.configManager = new ConfigManager(this);
         configManager.loadConfiguration();
+        this.authManager = new UuidAuth(uuid -> {
+            StringBuilder token = new StringBuilder();
+            for (int i = 0; i < 6; i ++) {
+                token.append(ThreadLocalRandom.current().nextInt(0, 10));
+            }
+            return new UuidToken(token.toString(), uuid, System.currentTimeMillis() + 300);
+        }, this, true);
+        this.packetProcessor = new PacketProcessor(this);
         this.nettyServer = new NettyServer(packetProcessor);
-        this.platform.scheduler().scheduleAsyncTask(() -> {
+        this.serverTask = this.platform.scheduler().scheduleAsyncTask(() -> {
             nettyServer.init();
+            packetProcessor.start();
             nettyServer.start(configManager.mainConfig().getPort());
         });
+        this.packetTask = this.platform.scheduler()
+                .scheduleRepeatingTask(packetProcessor, 0, 1);
 
     }
 
+    public void shutdown() {
+        nettyServer.stop();
+        serverTask.cancel();
+        packetProcessor.stop();
+        packetTask.cancel();
+    }
 
     public @NotNull Platform platform() {
         return this.platform;
+    }
+
+    public @NotNull ConfigManager configManager() {
+        return configManager;
+    }
+
+    public @NotNull UuidAuth authManager() {
+        return authManager;
     }
 
     public @NotNull Path dataFolder() {

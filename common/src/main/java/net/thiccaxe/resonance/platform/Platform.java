@@ -11,7 +11,7 @@ public interface Platform {
 
     Resonance getResonance();
 
-    Logger logger();
+    Logger<?> logger();
 
     default String version() {
         return "1.0.0";

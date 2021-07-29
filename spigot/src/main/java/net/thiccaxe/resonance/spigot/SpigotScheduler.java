@@ -1,5 +1,6 @@
 package net.thiccaxe.resonance.spigot;
 
+import net.thiccaxe.resonance.network.packet.processor.PacketProcessor;
 import net.thiccaxe.resonance.platform.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -22,6 +23,13 @@ public class SpigotScheduler implements Scheduler {
     public Task scheduleTask(Runnable runnable) {
         return new SpigotTask(
                 Bukkit.getScheduler().runTask(plugin, runnable)
+        );
+    }
+
+    @Override
+    public Task scheduleRepeatingTask(Runnable runnable, int delay, int period) {
+        return new SpigotTask(
+                Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, runnable, 0, period)
         );
     }
 

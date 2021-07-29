@@ -20,10 +20,10 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.incubator.channel.uring.IOUring;
 import io.netty.incubator.channel.uring.IOUringEventLoopGroup;
 import io.netty.incubator.channel.uring.IOUringServerSocketChannel;
-import net.thiccaxe.resonance.network.PacketProcessor;
+import net.thiccaxe.resonance.network.packet.processor.PacketProcessor;
 import net.thiccaxe.resonance.network.http.HttpRequestHandler;
 import net.thiccaxe.resonance.network.websocket.WebSocketChannel;
-import net.thiccaxe.resonance.network.websocket.WebSocketPacketDecoder;
+import net.thiccaxe.resonance.network.netty.codec.WebSocketPacketDecoder;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
@@ -127,6 +127,13 @@ public class NettyServer {
             this.serverChannel = (ServerSocketChannel) cf.channel();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
+        } finally {
+            stop();
         }
+    }
+
+    public void stop() {
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
     }
 }
