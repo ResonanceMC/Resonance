@@ -24,6 +24,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) {
+        System.out.println(request.uri());
         if (WEBSOCKET_URI.equalsIgnoreCase(request.uri())) {
             ctx.fireChannelRead(request.retain());
         } else {

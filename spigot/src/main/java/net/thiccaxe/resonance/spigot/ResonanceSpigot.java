@@ -21,10 +21,17 @@ public class ResonanceSpigot extends JavaPlugin implements Platform {
         this.scheduler = new SpigotScheduler(this);
         this.resonance = new Resonance(this);
         final UUID uuid = UUID.randomUUID();
-        resonance.authManager().generateToken(uuid);
-        getLogger().info(resonance.authManager().getLinkedToken(uuid).toString());
-        resonance.authManager().invalidateToken(resonance.authManager().getLinkedToken(uuid).getValue());
-        getLogger().info(resonance.authManager().getLinkedToken(uuid).toString());
+        try {
+            resonance.authManager().generateToken(uuid);
+            getLogger().info(resonance.authManager().getLinkedToken(uuid).toString());
+            resonance.authManager().invalidateToken(resonance.authManager().getLinkedToken(uuid).getValue());
+            getLogger().info(resonance.authManager().getLinkedToken(uuid).toString());
+        } catch (Exception ignored){}
+    }
+
+    @Override
+    public void onDisable() {
+        resonance.shutdown();
     }
 
     @Override

@@ -118,10 +118,12 @@ public class NettyServer {
     public void start(int port) {
         this.port = port;
         try {
-            ChannelFuture cf = bootstrap.bind(new InetSocketAddress(port)).sync();
+            ChannelFuture cf = bootstrap.bind("0.0.0.0", port).sync();
 
             if (!cf.isSuccess()) {
                 throw new IllegalStateException("Unable to bind server at :" + port);
+            } else {
+                System.out.println("Started at: " + port);
             }
 
             this.serverChannel = (ServerSocketChannel) cf.channel();
