@@ -5,11 +5,9 @@ import dev.razboy.resonance.Resonance;
 import dev.razboy.resonance.network.Connection;
 import dev.razboy.resonance.network.Request;
 import dev.razboy.resonance.packets.Packet;
-import dev.razboy.resonance.packets.clientbound.play.OPeerInfoPacket;
-import dev.razboy.resonance.packets.clientbound.play.OPeerRelayIceCandidatePacket;
-import dev.razboy.resonance.packets.clientbound.play.PeerUpdatePacket;
-import dev.razboy.resonance.packets.clientbound.play.UserUpdatePacket;
+import dev.razboy.resonance.packets.clientbound.play.*;
 import dev.razboy.resonance.packets.serverbound.play.PeerRelayIceCandidatePacket;
+import dev.razboy.resonance.packets.serverbound.play.PeerRelaySessionDescPacket;
 import dev.razboy.resonance.request.SyncReqManager;
 import dev.razboy.resonance.token.Token;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -19,6 +17,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class Clients {
     private final HashBiMap<Connection, String> connections = HashBiMap.create();
@@ -196,11 +195,23 @@ public class Clients {
     public void relayIce(Client client, PeerRelayIceCandidatePacket packet) {
         UUID peerId = UUID.fromString(packet.getPeerId());
         Client c = getClient(peerId);
-        if (client != null) {
+        if (c != null) {
             OPeerRelayIceCandidatePacket relayPacket = new OPeerRelayIceCandidatePacket();
             relayPacket.setPeerId(client.getToken().uuid());
             relayPacket.setIceCandidate(packet.getIceCandidate());
+            System.out.println("Relaying ICE packet from " + c.getUser().getPlayer().getName() + " to " + client.getUser().getPlayer().getName());
             SyncReqManager.send(new Request(c.getConnection(), relayPacket));
+        }
+    }
+    public void relayIceDescription(Client client, PeerRelaySessionDescPacket packet) {
+        UUID peerId = UUID.fromString(packet.getPeerId());
+        Client c = getClient(peerId);
+        if (c != null) {
+            OPeerRelaySessionDescPacket relayPacket = new OPeerRelaySessionDescPacket();
+            relayPacket.setPeerId(client.getToken().uuid());
+            relayPacket.setDescription(packet.getDescription());
+            SyncReqManager.send(new Request(c.getConnection(), relayPacket));
+            System.out.println("Relaying Session Desc packet from " + c.getUser().getPlayer().getName() + " to " + client.getUser().getPlayer().getName());
         }
     }
 }

@@ -13,10 +13,7 @@ import dev.razboy.resonance.packets.clientbound.play.PeerDisconnectPacket;
 import dev.razboy.resonance.packets.serverbound.ServerBoundPacket;
 import dev.razboy.resonance.packets.serverbound.auth.AuthTokenAuthenticatePacket;
 import dev.razboy.resonance.packets.serverbound.auth.LogoutPacket;
-import dev.razboy.resonance.packets.serverbound.play.PeerInfoPacket;
-import dev.razboy.resonance.packets.serverbound.play.PeerRelayIceCandidatePacket;
-import dev.razboy.resonance.packets.serverbound.play.UserConnectPacket;
-import dev.razboy.resonance.packets.serverbound.play.UserDisconnectPacket;
+import dev.razboy.resonance.packets.serverbound.play.*;
 import dev.razboy.resonance.packets.serverbound.auth.UserInfoPacket;
 import dev.razboy.resonance.token.Token;
 import dev.razboy.resonance.token.TokenManager;
@@ -30,6 +27,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
 
 public class SyncReqManager extends IRequestManager {
     private final Resonance plugin;
@@ -84,8 +82,11 @@ public class SyncReqManager extends IRequestManager {
                     tokenAuthenticate(request, packet);
                 } else if (packet instanceof PeerInfoPacket) {
                     sendPeers(request, packet);
-                } else if (packet instanceof PeerRelayIceCandidatePacket) {
+                } else if (packet instanceof PeerRelayIceCandidatePacket ) {
+//                plugin.getLogger().log(Level.INFO, "Ice relay packet received: " + packet);
                     handleIceRelay(request, packet);
+                } else if (packet instanceof PeerRelaySessionDescPacket) {
+                    handleIceSessionRelay(request, packet);
                 }
             }
         } catch (JSONException e) {
@@ -100,6 +101,14 @@ public class SyncReqManager extends IRequestManager {
         if (client != null) {
             PeerRelayIceCandidatePacket packet = (PeerRelayIceCandidatePacket) p;
             clients.relayIce(client, packet);
+        }
+    }
+
+    private void handleIceSessionRelay(Request request, Packet p) {
+        Client client = clients.getClient(request.connection);
+        if (client != null) {
+            PeerRelaySessionDescPacket packet = (PeerRelaySessionDescPacket) p;
+            clients.relayIceDescription(client, packet);
         }
     }
 

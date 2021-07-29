@@ -54,6 +54,8 @@ public enum PacketType {
                 return new UserConnectPacket();
             case 0x0b:
                 return new PeerRelayIceCandidatePacket();
+            case 0x0c:
+                return new PeerRelaySessionDescPacket();
             case 0xFE:
                 return new UserDisconnectPacket();
             case 0xFF:

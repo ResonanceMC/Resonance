@@ -5,29 +5,29 @@ import dev.razboy.resonance.packets.PacketType;
 import dev.razboy.resonance.packets.serverbound.ServerBoundPacket;
 import org.json.JSONObject;
 
-public class PeerRelayIceCandidatePacket extends ServerBoundPacket {
+public class PeerRelaySessionDescPacket extends ServerBoundPacket {
     @Override
     protected PacketType setPacketType() {
-        return PacketType.PEER_RELAY_ICE_CANDIDATE;
+        return PacketType.PEER_RELAY_SESSION_DESC;
     }
     private String peerId;
-    private JSONObject iceCandidate;
+    private JSONObject description;
     @Override
     public void readJson(JSONObject json) throws MalformedPacketException {
         peerId = json.getString("peerId");
         JSONObject body = json.getJSONObject("body");
-        iceCandidate = body.getJSONObject("iceCandidate");
+        description = body.getJSONObject("sessionDescription");
     }
 
     public String getPeerId() {
         return peerId;
     }
 
-    public JSONObject getIceCandidate() {
-        return iceCandidate;
+    public JSONObject getDescription() {
+        return description;
     }
     @Override
     public String repr() {
-        return getClass().getSimpleName()  + "(peerId=" + peerId + ", peer=" + iceCandidate.toString() + ")";
+        return getClass().getSimpleName()  + "(peerId=" + peerId + ", description=" + description.toString() + ")";
     }
 }
