@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class OPeerInfoPacket extends ClientBoundPacket {
     @Override
@@ -26,6 +27,6 @@ public class OPeerInfoPacket extends ClientBoundPacket {
 
     @Override
     public String read() {
-        return withIdActionBody(new JSONObject().put("peers", new JSONArray(peers))).toString();
+        return withIdActionBody(new JSONObject().put("peers", new JSONArray(peers.stream().distinct().toArray()))).toString();
     }
 }
