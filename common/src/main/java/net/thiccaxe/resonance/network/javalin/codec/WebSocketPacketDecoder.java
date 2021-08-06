@@ -1,35 +1,33 @@
-package net.thiccaxe.resonance.network.netty.codec;
+package net.thiccaxe.resonance.network.javalin.codec;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageDecoder;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import net.thiccaxe.resonance.network.packet.InboundPacket;
+import net.thiccaxe.resonance.network.packet.processor.PacketProcessor;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class WebSocketPacketDecoder extends MessageToMessageDecoder<TextWebSocketFrame> {
+public class WebSocketPacketDecoder {
 
     private final Gson GSON = new Gson();
 
-    @Override
-    protected void decode(ChannelHandlerContext ctx, TextWebSocketFrame frame, List<Object> out) {
+    protected List<InboundPacket> decode(String text) {
         try {
-            final String text = frame.retain().text();
-
             JsonElement jsonElement = GSON.fromJson(text, JsonElement.class);
-
+            List<InboundPacket> out = new ArrayList<>();
             if (jsonElement.isJsonObject()) {
                 System.out.println(jsonElement.getAsJsonObject().toString());
                 out.add(getInboundPacket(jsonElement.getAsJsonObject()));
             }
+            return out;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return Collections.emptyList();
     }
 
     private InboundPacket getInboundPacket(JsonObject jsonObject) {

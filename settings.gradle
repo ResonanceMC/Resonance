@@ -14,9 +14,12 @@ rootProject.name = 'Resonance'
 [
     "common",
     "spigot",
-    "fabric"
+    "fabric",
+    "minestom"
 ].forEach {
     include("resonance-$it")
     project(":resonance-$it").projectDir = "$rootDir/$it" as File
 }
+// include 'minestom'
+// findProject(':minestom')?.name = 'resonance-minestom'
 

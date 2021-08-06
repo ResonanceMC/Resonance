@@ -1,6 +1,5 @@
 package net.thiccaxe.resonance.spigot;
 
-import net.thiccaxe.resonance.network.packet.processor.PacketProcessor;
 import net.thiccaxe.resonance.platform.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;

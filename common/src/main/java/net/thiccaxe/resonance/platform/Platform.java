@@ -22,4 +22,15 @@ public interface Platform {
     }
 
     Scheduler scheduler();
+
+    /*
+    Bukkit needs some temp. classloader replacement with javalin :/
+     */
+    default boolean useJavalinClassLoaderHack() {
+        return false;
+    }
+
+    default ClassLoader classLoaderForJavalinHack() {
+        return null;
+    }
 }

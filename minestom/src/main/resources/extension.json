@@ -1,0 +1,5 @@
+{
+  "entrypoint": "net.thiccaxe.resonance.libs.net.thiccaxe.resonance.minestom.ResonanceMinestom",
+  "name": "Resonance",
+  "version": "${version}"
+}

@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 
 plugins {
-    id 'com.github.johnrengelman.shadow'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 repositories {
@@ -9,19 +9,21 @@ repositories {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
     }
     maven {
-        url 'https://papermc.io/repo/repository/maven-public'
+        url 'https://jitpack.io/'
+    }
+    maven {
+        url 'https://repo.spongepowered.org/maven'
     }
 }
 
 dependencies {
     implementation project(':resonance-common')
 
-    compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
-    implementation 'io.papermc:paperlib:1.0.6'
+    compileOnly 'com.github.Minestom:Minestom:d7a6891153'
 }
 
 processResources {
-    filesMatching("plugin.yml") {
+    filesMatching("extension.json") {
         expand 'version': project.version
     }
 }
@@ -37,6 +39,6 @@ tasks.shadowJar {
 
 build.dependsOn shadowJar {
     archiveClassifier.set(null)
-    destinationDirectory = file('../build/release')
-    archiveFileName.set("Resonance-${project.version}-spigot.jar")
+    destinationDirectory = file '../build/release'
+    archiveFileName.set("Resonance-${project.version}-minestom.jar")
 }

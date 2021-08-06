@@ -1,36 +1,36 @@
-package net.thiccaxe.resonance.spigot;
+package net.thiccaxe.resonance.minestom;
 
+import net.minestom.server.extensions.Extension;
 import net.thiccaxe.resonance.Resonance;
 import net.thiccaxe.resonance.platform.Platform;
 import net.thiccaxe.resonance.platform.Scheduler;
-import net.thiccaxe.resonance.platform.logger.JavaLogger;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.thiccaxe.resonance.platform.logger.Slf4jLogger;
+import net.thiccaxe.resonance.platform.logger.SystemLogger;
 
 import java.nio.file.Path;
-import java.util.UUID;
 
-public class ResonanceSpigot extends JavaPlugin implements Platform {
+public class ResonanceMinestom extends Extension implements Platform {
     private Resonance resonance;
-    private JavaLogger logger;
-    private SpigotScheduler scheduler;
+    private SystemLogger logger;
+    private MinestomScheduler scheduler;
 
     @Override
-    public void onEnable() {
-        this.logger = new JavaLogger(getLogger());
+    public void initialize() {
+        //this.logger = new Slf4jLogger(getLogger()); // old sabre
+        this.logger = new SystemLogger(name());
         logger().info(name() + " v" + version());
-        this.scheduler = new SpigotScheduler(this);
+        this.scheduler = new MinestomScheduler();
         this.resonance = new Resonance(this);
     }
 
     @Override
-    public void onDisable() {
+    public void terminate() {
         resonance.shutdown();
     }
 
     @Override
     public Path dataFolder() {
-        return getDataFolder().toPath();
+        return getDataDirectory();
     }
 
     @Override
@@ -39,13 +39,8 @@ public class ResonanceSpigot extends JavaPlugin implements Platform {
     }
 
     @Override
-    public JavaLogger logger() {
+    public SystemLogger logger() {
         return logger;
-    }
-
-    @Override
-    public String version() {
-        return "1.0.0";
     }
 
     @Override
@@ -60,6 +55,6 @@ public class ResonanceSpigot extends JavaPlugin implements Platform {
 
     @Override
     public ClassLoader classLoaderForJavalinHack() {
-        return ResonanceSpigot.class.getClassLoader();
+        return ResonanceMinestom.class.getClassLoader();
     }
 }

@@ -3,7 +3,6 @@ package net.thiccaxe.resonance.network.packet.client.login;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import net.thiccaxe.resonance.network.packet.InboundPacket;
 import net.thiccaxe.resonance.network.packet.client.ClientPacket;
 import net.thiccaxe.resonance.network.user.WebSocketConnection;
@@ -61,7 +60,5 @@ public class AuthTokenPacket implements ClientPacket {
             body.add("user", user);
         }
         jsonObject.add("body", body);
-
-        ctx.getChannel().writeAndFlush(new TextWebSocketFrame(jsonObject.toString()));
     }
 }

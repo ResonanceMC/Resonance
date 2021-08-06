@@ -11,8 +11,6 @@ public final class ConnectionManager {
 
 
     private final Set<Object> users = new CopyOnWriteArraySet<>();
-    private final Set<Object> unmodifableUsers = Collections.unmodifiableSet(users);
-
-
+    private final Set<Object> unmodifiableUsers = Collections.unmodifiableSet(users);
 
 }

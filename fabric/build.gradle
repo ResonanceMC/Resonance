@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 plugins {
     id 'com.github.johnrengelman.shadow'
     id 'fabric-loom' version '0.8-SNAPSHOT'
@@ -28,13 +30,13 @@ processResources {
     }
 }
 
-java {
-    def targetJava = 16
-    targetCompatibility = JavaVersion.toVersion(targetJava)
-    sourceCompatibility = JavaVersion.toVersion(targetJava)
+task relocateShadowJar (type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "net.thiccaxe.resonance.libs"
 }
 
 tasks {
+
     jar {
         archiveClassifier.set("dev")
     }
@@ -42,7 +44,7 @@ tasks {
         archiveClassifier.set("shadow")
         configurations = [project.configurations.shade]
 
-        relocate 'org.spongepowered.configurate', 'net.thiccaxe.resonance.lib.configurate'
+        dependsOn(tasks.relocateShadowJar)
     }
     remapJar {
         archiveClassifier.set(null)

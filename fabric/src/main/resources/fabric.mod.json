@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.thiccaxe.resonance.fabric.ResonanceFabricClient"
+      "net.thiccaxe.resonance.libs.net.thiccaxe.resonance.fabric.ResonanceFabricClient"
     ],
     "main": [
-      "net.thiccaxe.resonance.fabric.ResonanceFabric"
+      "net.thiccaxe.resonance.libs.net.thiccaxe.resonance.fabric.ResonanceFabric"
     ]
   },
   "mixins": [],
