@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocatio
 
 plugins {
     id 'com.github.johnrengelman.shadow'
-    id 'fabric-loom' version '0.9.4'
+    id 'fabric-loom' version '0.9.45'
 }
 
 configurations {
