@@ -1,5 +1,6 @@
 {
-  "entrypoint": "net.thiccaxe.resonance.libs.net.thiccaxe.resonance.minestom.ResonanceMinestom",
+  "_entrypoint": "net.thiccaxe.resonance.libs.net.thiccaxe.resonance.minestom.ResonanceMinestom",
+  "entrypoint": "net.thiccaxe.resonance.minestom.ResonanceMinestom",
   "name": "Resonance",
   "version": "${version}"
 }

@@ -34,11 +34,12 @@ task relocateShadowJar (type: ConfigureShadowRelocation) {
 }
 
 tasks.shadowJar {
-    dependsOn(relocateShadowJar)
-}
-
-build.dependsOn shadowJar {
+    //dependsOn(relocateShadowJar)
     archiveClassifier.set(null)
     destinationDirectory = file '../build/release'
     archiveFileName.set("Resonance-${project.version}-minestom.jar")
+}
+
+build {
+    dependsOn(tasks.shadowJar)
 }

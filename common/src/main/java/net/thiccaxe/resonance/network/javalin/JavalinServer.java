@@ -16,22 +16,9 @@ public class JavalinServer {
         startPluginClassLoader(resonance.platform().useJavalinClassLoaderHack());
         app = Javalin.create(cfg -> cfg.showJavalinBanner = false);
         app.get("/", ctx -> ctx.result("Welcome to Resonance!"));
-        app.ws("/test", ws -> {
-            ws.onMessage(ctx->{
-                ctx.send(ctx.message());
-            });
+        app.ws("/websocket/:path", ws -> {
+            ws.onConnect(ctx -> System.out.println("Connected"));
         });
-        /*
-        app.ws("/ws/:ticket", ws -> {
-            ws.onConnect(ctx -> {
-                resonance.platform().logger().info(ctx.pathParam("ticket"));
-                ctx.send("test");
-            });
-            ws.onMessage(ctx -> {
-                ctx.send(ctx.message());
-            });
-        });
-         */
         endPluginClassLoader(resonance.platform().useJavalinClassLoaderHack());
     }
 

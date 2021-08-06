@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocatio
 
 plugins {
     id 'com.github.johnrengelman.shadow'
-    id 'fabric-loom' version '0.9.45'
+    id 'fabric-loom' version '0.9.4'
 }
 
 configurations {
@@ -35,24 +35,18 @@ task relocateShadowJar (type: ConfigureShadowRelocation) {
     prefix = "net.thiccaxe.resonance.libs"
 }
 
-tasks {
 
-    jar {
-        archiveClassifier.set("dev")
-    }
-    shadowJar {
-        archiveClassifier.set("shadow")
-        configurations = [project.configurations.shade]
-
-        dependsOn(tasks.relocateShadowJar)
-    }
-    remapJar {
-        archiveClassifier.set(null)
-        input.set(shadowJar.archiveFile)
-        destinationDirectory = file '../build/release'
-        archiveFileName.set("Resonance-${project.version}-fabric-${project.minecraft_version}.jar")
-    }
-    build {
-        dependsOn(remapJar)
-    }
+tasks.shadowJar {
+    archiveClassifier.set("shaded")
+    configurations = [project.configurations.shade]
 }
+tasks.remapJar {
+    archiveClassifier.set(null)
+    input.set(shadowJar.archiveFile)
+    destinationDirectory = file '../build/release'
+    archiveFileName.set("Resonance-${project.version}-fabric-${project.minecraft_version}.jar")
+}
+build {
+    dependsOn(remapJar)
+}
+

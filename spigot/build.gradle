@@ -32,11 +32,12 @@ task relocateShadowJar (type: ConfigureShadowRelocation) {
 }
 
 tasks.shadowJar {
-    dependsOn(relocateShadowJar)
-}
-
-build.dependsOn shadowJar {
-    archiveClassifier.set(null)
+    //dependsOn(relocateShadowJar)
+    archiveClassifier.set(null);
     destinationDirectory = file('../build/release')
     archiveFileName.set("Resonance-${project.version}-spigot.jar")
+}
+
+build {
+    dependsOn(tasks.shadowJar)
 }
