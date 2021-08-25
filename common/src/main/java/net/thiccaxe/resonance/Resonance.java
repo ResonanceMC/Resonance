@@ -18,6 +18,7 @@ public class Resonance {
     private final @NotNull NettyServer nettyServer;
     private final @NotNull Scheduler.Task serverTask;
 
+
     public Resonance(final @NotNull Platform platform) {
         this.platform = platform;
         this.configManager = new ConfigManager(this);
@@ -30,7 +31,7 @@ public class Resonance {
             return new UuidToken(token.toString(), uuid, System.currentTimeMillis() + 300);
         }, this, true);
 
-        this.nettyServer = new NettyServer();
+        this.nettyServer = new NettyServer(this);
         this.serverTask = this.platform.scheduler().scheduleAsyncTask(() -> {
             //packetProcessor.start();
             nettyServer.start(configManager.mainConfig().getPort());

@@ -6,24 +6,27 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
+import net.thiccaxe.resonance.Resonance;
 
 public class NettyServer {
 
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workerGroup;
     private final SslContext sslContext;
+    private final Resonance resonance;
 
 
-    public NettyServer() {
-        this(new NioEventLoopGroup(1), new NioEventLoopGroup(2), null);
+    public NettyServer(Resonance resonance) {
+        this(resonance, new NioEventLoopGroup(1), new NioEventLoopGroup(2), null);
     }
 
-    public NettyServer(EventLoopGroup bossGroup, EventLoopGroup workerGroup) {
-        this(bossGroup, workerGroup, null);
+    public NettyServer(Resonance resonance, EventLoopGroup bossGroup, EventLoopGroup workerGroup) {
+        this(resonance, bossGroup, workerGroup, null);
     }
 
 
-    public NettyServer(EventLoopGroup bossGroup, EventLoopGroup workerGroup, SslContext sslContext) {
+    public NettyServer(Resonance resonance, EventLoopGroup bossGroup, EventLoopGroup workerGroup, SslContext sslContext) {
+        this.resonance = resonance;
         this.bossGroup = bossGroup;
         this.workerGroup = workerGroup;
         this.sslContext = sslContext;
@@ -34,7 +37,7 @@ public class NettyServer {
             ServerBootstrap bootstrap = new ServerBootstrap()
                     .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new NettyServerInitializer(sslContext));
+                    .childHandler(new NettyServerInitializer(resonance, sslContext));
 
             Channel channel = bootstrap.bind(port).channel();
 

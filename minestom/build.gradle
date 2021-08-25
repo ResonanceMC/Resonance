@@ -31,6 +31,7 @@ tasks.shadowJar {
     relocate('org.spongepowered', 'net.thiccaxe.libs.org.spongepowered')
     relocate('io.leangen.geantyref', 'net.thiccaxe.libs.io.leangen.geantyref')
     relocate('com.typesafe.config', 'net.thiccaxe.libs.com.typesafe.config')
+    relocate('com.fasterxml.jackson', 'net.thiccaxe.libs.com.fasterxml.jackson')
     relocate('org.slf4j', 'net.thiccaxe.libs.org.slf4j')
     relocate('io.netty', 'net.thiccaxe.libs.io.netty')
 

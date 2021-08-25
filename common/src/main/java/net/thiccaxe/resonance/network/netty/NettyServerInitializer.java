@@ -6,13 +6,16 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslContext;
+import net.thiccaxe.resonance.Resonance;
 
 public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
 
     private final SslContext sslContext;
+    private final Resonance resonance;
 
-    public NettyServerInitializer(SslContext sslContext) {
+    public NettyServerInitializer(final Resonance resonance, SslContext sslContext) {
         this.sslContext = sslContext;
+        this.resonance = resonance;
     }
 
     @Override
@@ -24,6 +27,6 @@ public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
 
         pipeline.addLast("httpServerCodec", new HttpServerCodec())
                 .addLast("httpObjectAggregator", new HttpObjectAggregator(65536))
-                .addLast("nettylinHttpRequestHandler", new HttpRequestHandler());
+                .addLast("httpRequestHandler", new HttpRequestHandler(resonance));
     }
 }
