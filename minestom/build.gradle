@@ -18,6 +18,7 @@ dependencies {
     implementation project(':resonance-common')
 
     compileOnly(group: 'com.github.Minestom', name: 'Minestom', version: 'd7a6891153')
+    implementation(group: 'io.netty', name: 'netty-codec-http', version: '4.1.67.Final')
 }
 
 processResources {
@@ -31,6 +32,7 @@ tasks.shadowJar {
     relocate('io.leangen.geantyref', 'net.thiccaxe.libs.io.leangen.geantyref')
     relocate('com.typesafe.config', 'net.thiccaxe.libs.com.typesafe.config')
     relocate('org.slf4j', 'net.thiccaxe.libs.org.slf4j')
+    relocate('io.netty', 'net.thiccaxe.libs.io.netty')
 
     archiveClassifier.set(null)
     destinationDirectory = file '../build/release'
