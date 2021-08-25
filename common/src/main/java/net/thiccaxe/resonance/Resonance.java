@@ -3,7 +3,7 @@ package net.thiccaxe.resonance;
 import net.thiccaxe.resonance.auth.uuid.UuidAuth;
 import net.thiccaxe.resonance.auth.uuid.UuidToken;
 import net.thiccaxe.resonance.config.ConfigManager;
-import net.thiccaxe.resonance.network.javalin.JavalinServer;
+import net.thiccaxe.resonance.network.netty.NettyServer;
 import net.thiccaxe.resonance.platform.Platform;
 import net.thiccaxe.resonance.platform.Scheduler;
 import org.jetbrains.annotations.NotNull;
@@ -15,10 +15,8 @@ public class Resonance {
     private final @NotNull Platform platform;
     private final @NotNull ConfigManager configManager;
     private final @NotNull UuidAuth authManager;
-    private final @NotNull JavalinServer javalinServer;
+    private final @NotNull NettyServer nettyServer;
     private final @NotNull Scheduler.Task serverTask;
-    //private final @NotNull PacketProcessor packetProcessor;
-    //private final @NotNull Scheduler.Task packetTask;
 
     public Resonance(final @NotNull Platform platform) {
         this.platform = platform;
@@ -32,10 +30,10 @@ public class Resonance {
             return new UuidToken(token.toString(), uuid, System.currentTimeMillis() + 300);
         }, this, true);
 
-        this.javalinServer = new JavalinServer(this);
+        this.nettyServer = new NettyServer();
         this.serverTask = this.platform.scheduler().scheduleAsyncTask(() -> {
             //packetProcessor.start();
-            javalinServer.start(configManager.mainConfig().getPort());
+            nettyServer.start(configManager.mainConfig().getPort());
         });
         //this.packetTask = this.platform.scheduler()
         //        .scheduleRepeatingTask(packetProcessor, 0, 1);
@@ -44,7 +42,7 @@ public class Resonance {
 
     public void shutdown() {
         serverTask.cancel();
-        javalinServer.stop();
+        nettyServer.stop();
         //packetProcessor.stop();
         //packetTask.cancel();
     }

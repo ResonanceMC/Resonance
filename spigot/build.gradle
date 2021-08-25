@@ -1,23 +1,21 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-
 plugins {
-    id 'com.github.johnrengelman.shadow'
+    id('com.github.johnrengelman.shadow')
 }
 
 repositories {
     maven {
-        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+        url('https://hub.spigotmc.org/nexus/content/repositories/snapshots')
     }
     maven {
-        url 'https://papermc.io/repo/repository/maven-public'
+        url('https://papermc.io/repo/repository/maven-public')
     }
 }
 
 dependencies {
-    implementation project(':resonance-common')
+    implementation(project(':resonance-common'))
 
-    compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
-    implementation 'io.papermc:paperlib:1.0.6'
+    compileOnly(group: 'org.spigotmc', name: 'spigot-api', version: '1.17-R0.1-SNAPSHOT')
+    implementation(group: 'io.papermc', name: 'paperlib', version: '1.0.6')
 }
 
 processResources {
@@ -26,13 +24,14 @@ processResources {
     }
 }
 
-task relocateShadowJar (type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-    prefix = "net.thiccaxe.resonance.libs"
-}
-
 tasks.shadowJar {
-    //dependsOn(relocateShadowJar)
+    relocate('org.spongepowered', 'net.thiccaxe.libs.org.spongepowered')
+    relocate('io.papermc', 'net.thiccaxe.libs.io.papermc')
+    relocate('org.spongepowered', 'net.thiccaxe.libs.org.spongepowered')
+    relocate('io.leangen.geantyref', 'net.thiccaxe.libs.io.leangen.geantyref')
+    relocate('com.typesafe.config', 'net.thiccaxe.libs.com.typesafe.config')
+    relocate('org.slf4j', 'net.thiccaxe.libs.org.slf4j')
+
     archiveClassifier.set(null);
     destinationDirectory = file('../build/release')
     archiveFileName.set("Resonance-${project.version}-spigot.jar")

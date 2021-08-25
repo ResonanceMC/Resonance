@@ -1,16 +1,10 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-
 plugins {
-    id 'com.github.johnrengelman.shadow'
-    id 'fabric-loom' version '0.9.4'
+    id('com.github.johnrengelman.shadow') version '7.0.0'
+    id('fabric-loom') version '0.9.4'
 }
 
 configurations {
     implementation.extendsFrom shade
-}
-
-repositories {
-    mavenLocal()
 }
 
 dependencies {
@@ -30,17 +24,18 @@ processResources {
     }
 }
 
-task relocateShadowJar (type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-    prefix = "net.thiccaxe.resonance.libs"
-}
-
-
 tasks.shadowJar {
     archiveClassifier.set("shaded")
+    relocate('org.spongepowered', 'net.thiccaxe.libs.org.spongepowered')
+    relocate('io.papermc', 'net.thiccaxe.libs.io.papermc')
+    relocate('org.spongepowered', 'net.thiccaxe.libs.org.spongepowered')
+    relocate('io.leangen.geantyref', 'net.thiccaxe.libs.io.leangen.geantyref')
+    relocate('com.typesafe.config', 'net.thiccaxe.libs.com.typesafe.config')
+    relocate('org.slf4j', 'net.thiccaxe.libs.org.slf4j')
     configurations = [project.configurations.shade]
 }
 tasks.remapJar {
+
     archiveClassifier.set(null)
     input.set(shadowJar.archiveFile)
     destinationDirectory = file '../build/release'

@@ -3,10 +3,6 @@ subprojects {
 
     group = "net.thiccaxe"
     version = coreVersion
-    // project.ext.majorVersion = '1'
-    // project.ext.minorVersion = '0'
-    // project.ext.patchVersion = '0'
-    // project.ext.fullVersion = project.ext.majorVersion + "." + project.ext.minorVersion + "." + project.ext.patchVersion
 
     tasks.withType(JavaCompile).configureEach( {
         it.options.encoding = "UTF-8"
@@ -20,7 +16,10 @@ subprojects {
     repositories {
         mavenCentral()
         maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            url('https://oss.sonatype.org/content/repositories/snapshots')
         }
     }
 }
+
+group = "net.thiccaxe"
+version = coreVersion

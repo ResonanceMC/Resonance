@@ -1,25 +1,23 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id('com.github.johnrengelman.shadow') version '7.0.0'
 }
 
 repositories {
     maven {
-        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+        url('https://hub.spigotmc.org/nexus/content/repositories/snapshots')
     }
     maven {
-        url 'https://jitpack.io/'
+        url('https://jitpack.io/')
     }
     maven {
-        url 'https://repo.spongepowered.org/maven'
+        url('https://repo.spongepowered.org/maven')
     }
 }
 
 dependencies {
     implementation project(':resonance-common')
 
-    compileOnly 'com.github.Minestom:Minestom:d7a6891153'
+    compileOnly(group: 'com.github.Minestom', name: 'Minestom', version: 'd7a6891153')
 }
 
 processResources {
@@ -27,14 +25,13 @@ processResources {
         expand 'version': project.version
     }
 }
-
-task relocateShadowJar (type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-    prefix = "net.thiccaxe.resonance.libs"
-}
-
 tasks.shadowJar {
-    //dependsOn(relocateShadowJar)
+    relocate('org.spongepowered', 'net.thiccaxe.libs.org.spongepowered')
+    relocate('org.spongepowered', 'net.thiccaxe.libs.org.spongepowered')
+    relocate('io.leangen.geantyref', 'net.thiccaxe.libs.io.leangen.geantyref')
+    relocate('com.typesafe.config', 'net.thiccaxe.libs.com.typesafe.config')
+    relocate('org.slf4j', 'net.thiccaxe.libs.org.slf4j')
+
     archiveClassifier.set(null)
     destinationDirectory = file '../build/release'
     archiveFileName.set("Resonance-${project.version}-minestom.jar")
