@@ -13,7 +13,6 @@ public class UuidToken implements Token<UUID, String> {
     protected UUID key;
 
     @Override
-
     public UUID getKey() {
         return key;
     }

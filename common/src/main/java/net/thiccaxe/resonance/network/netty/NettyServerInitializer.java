@@ -27,6 +27,6 @@ public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
 
         pipeline.addLast("httpServerCodec", new HttpServerCodec())
                 .addLast("httpObjectAggregator", new HttpObjectAggregator(65536))
-                .addLast("httpRequestHandler", new HttpRequestHandler(resonance));
+                .addLast("httpRequestHandler", new HttpConnection(resonance));
     }
 }

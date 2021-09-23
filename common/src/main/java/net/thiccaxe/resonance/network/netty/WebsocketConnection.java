@@ -16,13 +16,13 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-public class WebSocketRequestHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
+public class WebsocketConnection extends SimpleChannelInboundHandler<WebSocketFrame> {
 
     private final Resonance resonance;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public WebSocketRequestHandler(final Resonance resonance) {
+    public WebsocketConnection(final Resonance resonance) {
         super();
         this.resonance = resonance;
     }
